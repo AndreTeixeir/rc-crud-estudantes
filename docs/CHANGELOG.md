@@ -31,6 +31,7 @@ O formato segue as convenções do [Keep a Changelog](https://keepachangelog.com
 
 ---
 
+<<<<<<< HEAD
 ## [2.0.0] — 2025-03-05
 
 ### Adicionado
@@ -48,3 +49,18 @@ O formato segue as convenções do [Keep a Changelog](https://keepachangelog.com
 - Funções genéricas reutilizáveis entre módulos
 - Estrutura de dados expandida para dicionários
 - Geração automática de códigos sequenciais
+=======
+## [2.0.0] — Previsto para Semana 8
+
+### Planejado
+
+- CRUD completo (incluir, listar, atualizar, excluir) para todos os módulos:
+  - Professores (código, nome, CPF)
+  - Disciplinas (código, nome)
+  - Turmas (código, código do professor, código da disciplina)
+  - Matrículas (código da turma, código do estudante)
+- Persistência de dados em arquivo (JSON)
+- Validação de unicidade de códigos para turmas e matrículas
+- Funções genéricas e reutilizáveis entre módulos
+- Estrutura de dados expandida para dicionários
+>>>>>>> 6404170967c0c66de98a66afb155a59642702110

@@ -1,7 +1,7 @@
 # Nome: ANDRÉ TEIXEIRA
 # Curso: INTELIGENCIA ARTIFICIAL APLICADA
 # Atividade: CRUD COMPLETO - RACIOCÍNIO COMPUTACIONAL
-# Versão: 2.0 - Parte 2 (Semana 8)
+# Versão: 2.1 - Parte 2 (Finalizada e Corrigida)
 # Descrição: Sistema completo de gestão acadêmica com CRUD para todos os módulos e persistência em arquivo.
 
 import os
@@ -37,13 +37,7 @@ def criar_diretorio_dados():
     DIRETORIO_DADOS.mkdir(exist_ok=True)
 
 def salvar_em_arquivo(nome_modulo, dados):
-    """
-    Salva dados em arquivo JSON.
-    
-    Parâmetros:
-        nome_modulo (str): Nome do módulo (estudantes, professores, etc.)
-        dados (list): Lista de dados a serem salvos.
-    """
+    """Salva dados em arquivo JSON."""
     try:
         arquivo = ARQUIVOS.get(nome_modulo)
         if arquivo:
@@ -53,15 +47,7 @@ def salvar_em_arquivo(nome_modulo, dados):
         print(f"[ERRO] Falha ao salvar dados: {str(e)}")
 
 def carregar_de_arquivo(nome_modulo):
-    """
-    Carrega dados de arquivo JSON.
-    
-    Parâmetros:
-        nome_modulo (str): Nome do módulo.
-    
-    Retorna:
-        list: Lista de dados carregados ou lista vazia se arquivo não existir.
-    """
+    """Carrega dados de arquivo JSON."""
     try:
         arquivo = ARQUIVOS.get(nome_modulo)
         if arquivo and arquivo.exists():
@@ -86,61 +72,24 @@ def carregar_todos_dados():
 # ─────────────────────────────────────────────
 
 def gerar_proximo_codigo(lista):
-    """
-    Gera o próximo código automático baseado no maior código existente.
-    
-    Parâmetros:
-        lista (list): Lista de registros.
-    
-    Retorna:
-        int: Próximo código disponível.
-    """
+    """Gera o próximo código automático baseado no maior código existente."""
     if not lista:
         return 1
     return max(reg.get("codigo", 0) for reg in lista) + 1
 
 def codigo_existe(lista, codigo):
-    """
-    Verifica se um código já existe na lista.
-    
-    Parâmetros:
-        lista (list): Lista de registros.
-        codigo (int): Código a verificar.
-    
-    Retorna:
-        bool: True se existe, False caso contrário.
-    """
+    """Verifica se um código já existe na lista."""
     return any(reg.get("codigo") == codigo for reg in lista)
 
 def encontrar_por_codigo(lista, codigo):
-    """
-    Encontra um registro pelo código.
-    
-    Parâmetros:
-        lista (list): Lista de registros.
-        codigo (int): Código a procurar.
-    
-    Retorna:
-        dict: Registro encontrado ou None.
-    """
+    """Encontra um registro pelo código."""
     for reg in lista:
         if reg.get("codigo") == codigo:
             return reg
     return None
 
 def incluir_registro(lista, novo_registro, nome_modulo, chave_unica="codigo"):
-    """
-    Inclui um novo registro na lista com validação de duplicidade.
-    
-    Parâmetros:
-        lista (list): Lista onde adicionar.
-        novo_registro (dict): Novo registro a adicionar.
-        nome_modulo (str): Nome do módulo (para salvar em arquivo).
-        chave_unica (str): Campo que deve ser único.
-    
-    Retorna:
-        bool: True se incluído com sucesso, False caso contrário.
-    """
+    """Inclui um novo registro na lista com validação de duplicidade."""
     if chave_unica in novo_registro:
         if codigo_existe(lista, novo_registro[chave_unica]):
             print(f"[AVISO] Código {novo_registro[chave_unica]} já existe.")
@@ -151,14 +100,7 @@ def incluir_registro(lista, novo_registro, nome_modulo, chave_unica="codigo"):
     return True
 
 def listar_registros(lista, nome_modulo, campos_exibicao=None):
-    """
-    Lista todos os registros de um módulo.
-    
-    Parâmetros:
-        lista (list): Lista de registros.
-        nome_modulo (str): Nome do módulo.
-        campos_exibicao (list): Campos a exibir (None = todos).
-    """
+    """Lista todos os registros de um módulo."""
     if not lista:
         print(f"\nNão há {nome_modulo} cadastrados.")
         return
@@ -172,18 +114,7 @@ def listar_registros(lista, nome_modulo, campos_exibicao=None):
             print(f"  {i:>3}. {registro}")
 
 def atualizar_registro(lista, codigo, dados_atualizados, nome_modulo):
-    """
-    Atualiza um registro existente.
-    
-    Parâmetros:
-        lista (list): Lista de registros.
-        codigo (int): Código do registro a atualizar.
-        dados_atualizados (dict): Novos dados.
-        nome_modulo (str): Nome do módulo.
-    
-    Retorna:
-        bool: True se atualizado, False caso contrário.
-    """
+    """Atualiza um registro existente."""
     registro = encontrar_por_codigo(lista, codigo)
     if registro:
         registro.update(dados_atualizados)
@@ -192,17 +123,7 @@ def atualizar_registro(lista, codigo, dados_atualizados, nome_modulo):
     return False
 
 def excluir_registro(lista, codigo, nome_modulo):
-    """
-    Exclui um registro da lista.
-    
-    Parâmetros:
-        lista (list): Lista de registros.
-        codigo (int): Código do registro a excluir.
-        nome_modulo (str): Nome do módulo.
-    
-    Retorna:
-        bool: True se excluído, False caso contrário.
-    """
+    """Exclui um registro da lista."""
     for i, registro in enumerate(lista):
         if registro.get("codigo") == codigo:
             lista.pop(i)
@@ -258,11 +179,11 @@ def solicitar_codigo_existente(lista, mensagem="Código"):
             print("[ERRO] Digite um número válido.")
 
 # ─────────────────────────────────────────────
-# FUNÇÕES DE ESTUDANTES
+# FUNÇÕES DE ESTUDANTES (CORRIGIDA)
 # ─────────────────────────────────────────────
 
 def incluir_estudante():
-    """Inclui um novo estudante."""
+    """Inclui um novo estudante com tratamento de erro corrigido."""
     exibir_cabecalho("INCLUSÃO DE ESTUDANTE")
     
     while True:
@@ -280,15 +201,8 @@ def incluir_estudante():
                 print(f"[OK] Estudante '{nome}' incluído com sucesso (Código: {codigo}).")
                 
                 continuar = input("\nDeseja incluir outro estudante? (S/N): ").upper()
-                while continuar not in ("S", "N"):
-                    print("[ERRO] Digite 'S' ou 'N'.")
-                    continuar = input("Deseja incluir outro estudante? (S/N): ").upper()
-                
                 if continuar == "N":
                     break
-            else:
-                print("[ERRO] Falha ao incluir estudante.")
-                break
         except KeyboardInterrupt:
             print("\n\n[AVISO] Operação cancelada.")
             break
@@ -296,695 +210,299 @@ def incluir_estudante():
     aguardar_enter()
 
 def listar_estudantes():
-    """Lista todos os estudantes."""
     exibir_cabecalho("LISTAGEM DE ESTUDANTES")
     listar_registros(estudantes, "estudantes", ["codigo", "nome"])
     aguardar_enter()
 
 def atualizar_estudante():
-    """Atualiza um estudante existente."""
     exibir_cabecalho("ATUALIZAÇÃO DE ESTUDANTE")
-    
     if not estudantes:
-        print("\nNão há estudantes para atualizar.")
-        aguardar_enter()
-        return
-    
+        print("\nNão há estudantes cadastrados."); aguardar_enter(); return
     try:
         codigo = solicitar_codigo_existente(estudantes, "código do estudante")
         novo_nome = input("Digite o novo nome: ").strip()
-        
         valido, mensagem = validar_nome(novo_nome)
-        if not valido:
-            print(f"[ERRO] {mensagem}")
-            aguardar_enter()
-            return
-        
-        if atualizar_registro(estudantes, codigo, {"nome": novo_nome}, "estudantes"):
-            print(f"[OK] Estudante atualizado com sucesso.")
-        else:
-            print("[ERRO] Estudante não encontrado.")
+        if valido and atualizar_registro(estudantes, codigo, {"nome": novo_nome}, "estudantes"):
+            print("[OK] Estudante atualizado com sucesso.")
     except ValueError:
         print("[ERRO] Entrada inválida.")
-    
     aguardar_enter()
 
 def excluir_estudante():
-    """Exclui um estudante."""
     exibir_cabecalho("EXCLUSÃO DE ESTUDANTE")
-    
     if not estudantes:
-        print("\nNão há estudantes para excluir.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(estudantes, "código do estudante")
-        confirmacao = input(f"\nTem certeza que deseja excluir? (S/N): ").upper()
-        
-        if confirmacao == "S":
-            if excluir_registro(estudantes, codigo, "estudantes"):
-                print("[OK] Estudante excluído com sucesso.")
-            else:
-                print("[ERRO] Falha ao excluir.")
-        else:
-            print("[AVISO] Operação cancelada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+        print("\nNão há estudantes cadastrados."); aguardar_enter(); return
+    codigo = solicitar_codigo_existente(estudantes, "código do estudante")
+    if input("\nTem certeza que deseja excluir? (S/N): ").upper() == "S":
+        excluir_registro(estudantes, codigo, "estudantes")
+        print("[OK] Estudante excluído.")
     aguardar_enter()
 
 def menu_estudantes():
-    """Menu de operações de estudantes."""
     while True:
         exibir_cabecalho("ESTUDANTES - MENU DE OPERAÇÕES")
-        print("\n  1. Incluir Estudante")
-        print("  2. Listar Estudantes")
-        print("  3. Atualizar Estudante")
-        print("  4. Excluir Estudante")
-        print("  0. Voltar ao Menu Principal")
-        
-        opcao = input("\nEscolha uma opção: ").strip()
-        
-        if opcao == "1":
-            incluir_estudante()
-        elif opcao == "2":
-            listar_estudantes()
-        elif opcao == "3":
-            atualizar_estudante()
-        elif opcao == "4":
-            excluir_estudante()
-        elif opcao == "0":
-            break
-        else:
-            print("\n[ERRO] Opção inválida.")
-            aguardar_enter()
+        print("\n  1. Incluir\n  2. Listar\n  3. Atualizar\n  4. Excluir\n  0. Voltar")
+        op = input("\nEscolha: ")
+        if op == "1": incluir_estudante()
+        elif op == "2": listar_estudantes()
+        elif op == "3": atualizar_estudante()
+        elif op == "4": excluir_estudante()
+        elif op == "0": break
 
 # ─────────────────────────────────────────────
 # FUNÇÕES DE PROFESSORES
 # ─────────────────────────────────────────────
 
 def incluir_professor():
-    """Inclui um novo professor."""
     exibir_cabecalho("INCLUSÃO DE PROFESSOR")
-    
     while True:
         try:
-            nome = input("\nDigite o nome do professor: ").strip()
-            valido, mensagem = validar_nome(nome)
-            if not valido:
-                print(f"[ERRO] {mensagem}")
-                continue
-            
-            cpf = input("Digite o CPF (formato: XXX.XXX.XXX-XX): ").strip()
-            valido, mensagem = validar_cpf_basico(cpf)
-            if not valido:
-                print(f"[ERRO] {mensagem}")
-                continue
-            
-            codigo = gerar_proximo_codigo(professores)
-            novo_professor = {"codigo": codigo, "nome": nome, "cpf": cpf}
-            
-            if incluir_registro(professores, novo_professor, "professores"):
-                print(f"[OK] Professor '{nome}' incluído com sucesso (Código: {codigo}).")
-                
-                continuar = input("\nDeseja incluir outro professor? (S/N): ").upper()
-                while continuar not in ("S", "N"):
-                    print("[ERRO] Digite 'S' ou 'N'.")
-                    continuar = input("Deseja incluir outro professor? (S/N): ").upper()
-                
-                if continuar == "N":
-                    break
-            else:
-                print("[ERRO] Falha ao incluir professor.")
-                break
-        except KeyboardInterrupt:
-            print("\n\n[AVISO] Operação cancelada.")
-            break
-    
+            nome = input("\nNome: ").strip()
+            cpf = input("CPF (XXX.XXX.XXX-XX): ").strip()
+            if validar_nome(nome)[0] and validar_cpf_basico(cpf)[0]:
+                codigo = gerar_proximo_codigo(professores)
+                if incluir_registro(professores, {"codigo": codigo, "nome": nome, "cpf": cpf}, "professores"):
+                    print(f"[OK] Incluído (Código: {codigo}).")
+                    if input("\nOutro? (S/N): ").upper() == "N": break
+        except KeyboardInterrupt: break
     aguardar_enter()
 
 def listar_professores():
-    """Lista todos os professores."""
     exibir_cabecalho("LISTAGEM DE PROFESSORES")
     listar_registros(professores, "professores", ["codigo", "nome", "cpf"])
     aguardar_enter()
 
 def atualizar_professor():
-    """Atualiza um professor."""
     exibir_cabecalho("ATUALIZAÇÃO DE PROFESSOR")
-    
-    if not professores:
-        print("\nNão há professores para atualizar.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(professores, "código do professor")
-        novo_nome = input("Digite o novo nome: ").strip()
-        
-        valido, mensagem = validar_nome(novo_nome)
-        if not valido:
-            print(f"[ERRO] {mensagem}")
-            aguardar_enter()
-            return
-        
-        novo_cpf = input("Digite o novo CPF: ").strip()
-        valido, mensagem = validar_cpf_basico(novo_cpf)
-        if not valido:
-            print(f"[ERRO] {mensagem}")
-            aguardar_enter()
-            return
-        
-        if atualizar_registro(professores, codigo, {"nome": novo_nome, "cpf": novo_cpf}, "professores"):
-            print("[OK] Professor atualizado com sucesso.")
-        else:
-            print("[ERRO] Professor não encontrado.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+    if not professores: print("\nVazio."); aguardar_enter(); return
+    codigo = solicitar_codigo_existente(professores, "código")
+    nome = input("Novo nome: ").strip()
+    cpf = input("Novo CPF: ").strip()
+    if atualizar_registro(professores, codigo, {"nome": nome, "cpf": cpf}, "professores"):
+        print("[OK] Atualizado.")
     aguardar_enter()
 
 def excluir_professor():
-    """Exclui um professor."""
     exibir_cabecalho("EXCLUSÃO DE PROFESSOR")
-    
-    if not professores:
-        print("\nNão há professores para excluir.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(professores, "código do professor")
-        confirmacao = input(f"\nTem certeza que deseja excluir? (S/N): ").upper()
-        
-        if confirmacao == "S":
-            if excluir_registro(professores, codigo, "professores"):
-                print("[OK] Professor excluído com sucesso.")
-            else:
-                print("[ERRO] Falha ao excluir.")
-        else:
-            print("[AVISO] Operação cancelada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+    if not professores: print("\nVazio."); aguardar_enter(); return
+    codigo = solicitar_codigo_existente(professores, "código")
+    if input("Confirmar? (S/N): ").upper() == "S":
+        excluir_registro(professores, codigo, "professores")
+        print("[OK] Excluído.")
     aguardar_enter()
 
 def menu_professores():
-    """Menu de operações de professores."""
     while True:
-        exibir_cabecalho("PROFESSORES - MENU DE OPERAÇÕES")
-        print("\n  1. Incluir Professor")
-        print("  2. Listar Professores")
-        print("  3. Atualizar Professor")
-        print("  4. Excluir Professor")
-        print("  0. Voltar ao Menu Principal")
-        
-        opcao = input("\nEscolha uma opção: ").strip()
-        
-        if opcao == "1":
-            incluir_professor()
-        elif opcao == "2":
-            listar_professores()
-        elif opcao == "3":
-            atualizar_professor()
-        elif opcao == "4":
-            excluir_professor()
-        elif opcao == "0":
-            break
-        else:
-            print("\n[ERRO] Opção inválida.")
-            aguardar_enter()
+        exibir_cabecalho("PROFESSORES - MENU")
+        print("\n  1. Incluir\n  2. Listar\n  3. Atualizar\n  4. Excluir\n  0. Voltar")
+        op = input("\nEscolha: ")
+        if op == "1": incluir_professor()
+        elif op == "2": listar_professores()
+        elif op == "3": atualizar_professor()
+        elif op == "4": excluir_professor()
+        elif op == "0": break
 
 # ─────────────────────────────────────────────
 # FUNÇÕES DE DISCIPLINAS
 # ─────────────────────────────────────────────
 
 def incluir_disciplina():
-    """Inclui uma nova disciplina."""
     exibir_cabecalho("INCLUSÃO DE DISCIPLINA")
-    
     while True:
-        try:
-            nome = input("\nDigite o nome da disciplina: ").strip()
-            valido, mensagem = validar_nome(nome)
-            if not valido:
-                print(f"[ERRO] {mensagem}")
-                continue
-            
+        nome = input("\nNome da disciplina: ").strip()
+        if validar_nome(nome)[0]:
             codigo = gerar_proximo_codigo(disciplinas)
-            nova_disciplina = {"codigo": codigo, "nome": nome}
-            
-            if incluir_registro(disciplinas, nova_disciplina, "disciplinas"):
-                print(f"[OK] Disciplina '{nome}' incluída com sucesso (Código: {codigo}).")
-                
-                continuar = input("\nDeseja incluir outra disciplina? (S/N): ").upper()
-                while continuar not in ("S", "N"):
-                    print("[ERRO] Digite 'S' ou 'N'.")
-                    continuar = input("Deseja incluir outra disciplina? (S/N): ").upper()
-                
-                if continuar == "N":
-                    break
-            else:
-                print("[ERRO] Falha ao incluir disciplina.")
-                break
-        except KeyboardInterrupt:
-            print("\n\n[AVISO] Operação cancelada.")
-            break
-    
+            incluir_registro(disciplinas, {"codigo": codigo, "nome": nome}, "disciplinas")
+            print(f"[OK] Incluída (Código: {codigo}).")
+            if input("\nOutra? (S/N): ").upper() == "N": break
     aguardar_enter()
 
 def listar_disciplinas():
-    """Lista todas as disciplinas."""
     exibir_cabecalho("LISTAGEM DE DISCIPLINAS")
     listar_registros(disciplinas, "disciplinas", ["codigo", "nome"])
     aguardar_enter()
 
 def atualizar_disciplina():
-    """Atualiza uma disciplina."""
     exibir_cabecalho("ATUALIZAÇÃO DE DISCIPLINA")
-    
-    if not disciplinas:
-        print("\nNão há disciplinas para atualizar.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(disciplinas, "código da disciplina")
-        novo_nome = input("Digite o novo nome: ").strip()
-        
-        valido, mensagem = validar_nome(novo_nome)
-        if not valido:
-            print(f"[ERRO] {mensagem}")
-            aguardar_enter()
-            return
-        
-        if atualizar_registro(disciplinas, codigo, {"nome": novo_nome}, "disciplinas"):
-            print("[OK] Disciplina atualizada com sucesso.")
-        else:
-            print("[ERRO] Disciplina não encontrada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+    codigo = solicitar_codigo_existente(disciplinas, "código")
+    nome = input("Novo nome: ").strip()
+    if atualizar_registro(disciplinas, codigo, {"nome": nome}, "disciplinas"):
+        print("[OK] Atualizado.")
     aguardar_enter()
 
 def excluir_disciplina():
-    """Exclui uma disciplina."""
     exibir_cabecalho("EXCLUSÃO DE DISCIPLINA")
-    
-    if not disciplinas:
-        print("\nNão há disciplinas para excluir.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(disciplinas, "código da disciplina")
-        confirmacao = input(f"\nTem certeza que deseja excluir? (S/N): ").upper()
-        
-        if confirmacao == "S":
-            if excluir_registro(disciplinas, codigo, "disciplinas"):
-                print("[OK] Disciplina excluída com sucesso.")
-            else:
-                print("[ERRO] Falha ao excluir.")
-        else:
-            print("[AVISO] Operação cancelada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+    codigo = solicitar_codigo_existente(disciplinas, "código")
+    if input("Confirmar? (S/N): ").upper() == "S":
+        excluir_registro(disciplinas, codigo, "disciplinas")
+        print("[OK] Excluído.")
     aguardar_enter()
 
 def menu_disciplinas():
-    """Menu de operações de disciplinas."""
     while True:
-        exibir_cabecalho("DISCIPLINAS - MENU DE OPERAÇÕES")
-        print("\n  1. Incluir Disciplina")
-        print("  2. Listar Disciplinas")
-        print("  3. Atualizar Disciplina")
-        print("  4. Excluir Disciplina")
-        print("  0. Voltar ao Menu Principal")
-        
-        opcao = input("\nEscolha uma opção: ").strip()
-        
-        if opcao == "1":
-            incluir_disciplina()
-        elif opcao == "2":
-            listar_disciplinas()
-        elif opcao == "3":
-            atualizar_disciplina()
-        elif opcao == "4":
-            excluir_disciplina()
-        elif opcao == "0":
-            break
-        else:
-            print("\n[ERRO] Opção inválida.")
-            aguardar_enter()
+        exibir_cabecalho("DISCIPLINAS - MENU")
+        print("\n  1. Incluir\n  2. Listar\n  3. Atualizar\n  4. Excluir\n  0. Voltar")
+        op = input("\nEscolha: ")
+        if op == "1": incluir_disciplina()
+        elif op == "2": listar_disciplinas()
+        elif op == "3": atualizar_disciplina()
+        elif op == "4": excluir_disciplina()
+        elif op == "0": break
 
 # ─────────────────────────────────────────────
 # FUNÇÕES DE TURMAS
 # ─────────────────────────────────────────────
 
 def incluir_turma():
-    """Inclui uma nova turma com validação de referências."""
     exibir_cabecalho("INCLUSÃO DE TURMA")
-    
-    if not professores:
-        print("\n[ERRO] Não há professores cadastrados. Cadastre um professor primeiro.")
-        aguardar_enter()
-        return
-    
-    if not disciplinas:
-        print("\n[ERRO] Não há disciplinas cadastradas. Cadastre uma disciplina primeiro.")
-        aguardar_enter()
-        return
-    
-    while True:
-        try:
-            codigo_professor = solicitar_codigo_existente(professores, "código do professor")
-            if not encontrar_por_codigo(professores, codigo_professor):
-                print("[ERRO] Professor não encontrado.")
-                continue
-            
-            codigo_disciplina = solicitar_codigo_existente(disciplinas, "código da disciplina")
-            if not encontrar_por_codigo(disciplinas, codigo_disciplina):
-                print("[ERRO] Disciplina não encontrada.")
-                continue
-            
-            codigo = gerar_proximo_codigo(turmas)
-            nova_turma = {
-                "codigo": codigo,
-                "codigo_professor": codigo_professor,
-                "codigo_disciplina": codigo_disciplina
-            }
-            
-            if incluir_registro(turmas, nova_turma, "turmas"):
-                print(f"[OK] Turma incluída com sucesso (Código: {codigo}).")
-                
-                continuar = input("\nDeseja incluir outra turma? (S/N): ").upper()
-                while continuar not in ("S", "N"):
-                    print("[ERRO] Digite 'S' ou 'N'.")
-                    continuar = input("Deseja incluir outra turma? (S/N): ").upper()
-                
-                if continuar == "N":
-                    break
-            else:
-                print("[ERRO] Falha ao incluir turma.")
-                break
-        except KeyboardInterrupt:
-            print("\n\n[AVISO] Operação cancelada.")
-            break
-    
-    aguardar_enter()
+    if not professores or not disciplinas:
+        print("[ERRO] Cadastre professor e disciplina primeiro."); aguardar_enter(); return
+    cp = solicitar_codigo_existente(professores, "cód. professor")
+    cd = solicitar_codigo_existente(disciplinas, "cód. disciplina")
+    codigo = gerar_proximo_codigo(turmas)
+    incluir_registro(turmas, {"codigo": codigo, "codigo_professor": cp, "codigo_disciplina": cd}, "turmas")
+    print(f"[OK] Turma {codigo} criada."); aguardar_enter()
 
 def listar_turmas():
-    """Lista todas as turmas com informações de professor e disciplina."""
     exibir_cabecalho("LISTAGEM DE TURMAS")
-    
-    if not turmas:
-        print("\nNão há turmas cadastradas.")
-        aguardar_enter()
-        return
-    
-    print(f"\nTotal de turmas cadastradas: {len(turmas)}\n")
-    for i, turma in enumerate(turmas, start=1):
-        prof = encontrar_por_codigo(professores, turma.get("codigo_professor", 0))
-        disc = encontrar_por_codigo(disciplinas, turma.get("codigo_disciplina", 0))
-        prof_nome = prof.get("nome", "N/A") if prof else "N/A"
-        disc_nome = disc.get("nome", "N/A") if disc else "N/A"
-        
-        print(f"  {i:>3}. Turma {turma['codigo']} | Prof: {prof_nome} | Disc: {disc_nome}")
-    
+    if not turmas: print("\nVazio."); aguardar_enter(); return
+    for t in turmas:
+        p = encontrar_por_codigo(professores, t['codigo_professor'])
+        d = encontrar_por_codigo(disciplinas, t['codigo_disciplina'])
+        print(f"Turma {t['codigo']} | Prof: {p['nome'] if p else 'N/A'} | Disc: {d['nome'] if d else 'N/A'}")
     aguardar_enter()
 
 def atualizar_turma():
-    """Atualiza uma turma."""
     exibir_cabecalho("ATUALIZAÇÃO DE TURMA")
-    
-    if not turmas:
-        print("\nNão há turmas para atualizar.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(turmas, "código da turma")
-        
-        codigo_professor = solicitar_codigo_existente(professores, "código do novo professor")
-        if not encontrar_por_codigo(professores, codigo_professor):
-            print("[ERRO] Professor não encontrado.")
-            aguardar_enter()
-            return
-        
-        codigo_disciplina = solicitar_codigo_existente(disciplinas, "código da nova disciplina")
-        if not encontrar_por_codigo(disciplinas, codigo_disciplina):
-            print("[ERRO] Disciplina não encontrada.")
-            aguardar_enter()
-            return
-        
-        if atualizar_registro(turmas, codigo, {
-            "codigo_professor": codigo_professor,
-            "codigo_disciplina": codigo_disciplina
-        }, "turmas"):
-            print("[OK] Turma atualizada com sucesso.")
-        else:
-            print("[ERRO] Turma não encontrada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+    codigo = solicitar_codigo_existente(turmas, "código da turma")
+    cp = solicitar_codigo_existente(professores, "novo cód. professor")
+    cd = solicitar_codigo_existente(disciplinas, "novo cód. disciplina")
+    if atualizar_registro(turmas, codigo, {"codigo_professor": cp, "codigo_disciplina": cd}, "turmas"):
+        print("[OK] Turma atualizada.")
     aguardar_enter()
 
 def excluir_turma():
-    """Exclui uma turma."""
     exibir_cabecalho("EXCLUSÃO DE TURMA")
-    
-    if not turmas:
-        print("\nNão há turmas para excluir.")
-        aguardar_enter()
-        return
-    
-    try:
-        codigo = solicitar_codigo_existente(turmas, "código da turma")
-        confirmacao = input(f"\nTem certeza que deseja excluir? (S/N): ").upper()
-        
-        if confirmacao == "S":
-            if excluir_registro(turmas, codigo, "turmas"):
-                print("[OK] Turma excluída com sucesso.")
-            else:
-                print("[ERRO] Falha ao excluir.")
-        else:
-            print("[AVISO] Operação cancelada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+    codigo = solicitar_codigo_existente(turmas, "código")
+    if input("Confirmar? (S/N): ").upper() == "S":
+        excluir_registro(turmas, codigo, "turmas")
+        print("[OK] Excluída.")
     aguardar_enter()
 
 def menu_turmas():
-    """Menu de operações de turmas."""
     while True:
-        exibir_cabecalho("TURMAS - MENU DE OPERAÇÕES")
-        print("\n  1. Incluir Turma")
-        print("  2. Listar Turmas")
-        print("  3. Atualizar Turma")
-        print("  4. Excluir Turma")
-        print("  0. Voltar ao Menu Principal")
-        
-        opcao = input("\nEscolha uma opção: ").strip()
-        
-        if opcao == "1":
-            incluir_turma()
-        elif opcao == "2":
-            listar_turmas()
-        elif opcao == "3":
-            atualizar_turma()
-        elif opcao == "4":
-            excluir_turma()
-        elif opcao == "0":
-            break
-        else:
-            print("\n[ERRO] Opção inválida.")
-            aguardar_enter()
+        exibir_cabecalho("TURMAS - MENU")
+        print("\n  1. Incluir\n  2. Listar\n  3. Atualizar\n  4. Excluir\n  0. Voltar")
+        op = input("\nEscolha: ")
+        if op == "1": incluir_turma()
+        elif op == "2": listar_turmas()
+        elif op == "3": atualizar_turma()
+        elif op == "4": excluir_turma()
+        elif op == "0": break
 
 # ─────────────────────────────────────────────
-# FUNÇÕES DE MATRÍCULAS
+# FUNÇÕES DE MATRÍCULAS (CRUD COMPLETO FINALIZADO)
 # ─────────────────────────────────────────────
 
 def incluir_matricula():
-    """Inclui uma nova matrícula com validação de referências."""
     exibir_cabecalho("INCLUSÃO DE MATRÍCULA")
-    
-    if not turmas:
-        print("\n[ERRO] Não há turmas cadastradas.")
-        aguardar_enter()
-        return
-    
-    if not estudantes:
-        print("\n[ERRO] Não há estudantes cadastrados.")
-        aguardar_enter()
-        return
-    
-    while True:
-        try:
-            codigo_turma = solicitar_codigo_existente(turmas, "código da turma")
-            if not encontrar_por_codigo(turmas, codigo_turma):
-                print("[ERRO] Turma não encontrada.")
-                continue
-            
-            codigo_estudante = solicitar_codigo_existente(estudantes, "código do estudante")
-            if not encontrar_por_codigo(estudantes, codigo_estudante):
-                print("[ERRO] Estudante não encontrado.")
-                continue
-            
-            # Verificar se a matrícula já existe
-            matricula_existe = any(
-                m.get("codigo_turma") == codigo_turma and m.get("codigo_estudante") == codigo_estudante
-                for m in matriculas
-            )
-            
-            if matricula_existe:
-                print("[AVISO] Este estudante já está matriculado nesta turma.")
-                continuar = input("Deseja tentar outra matrícula? (S/N): ").upper()
-                if continuar == "N":
-                    break
-                continue
-            
-            nova_matricula = {
-                "codigo_turma": codigo_turma,
-                "codigo_estudante": codigo_estudante
-            }
-            
-            matriculas.append(nova_matricula)
-            salvar_em_arquivo("matriculas", matriculas)
-            print("[OK] Matrícula incluída com sucesso.")
-            
-            continuar = input("\nDeseja incluir outra matrícula? (S/N): ").upper()
-            while continuar not in ("S", "N"):
-                print("[ERRO] Digite 'S' ou 'N'.")
-                continuar = input("Deseja incluir outra matrícula? (S/N): ").upper()
-            
-            if continuar == "N":
-                break
-        except KeyboardInterrupt:
-            print("\n\n[AVISO] Operação cancelada.")
-            break
-    
-    aguardar_enter()
+    if not turmas or not estudantes:
+        print("[ERRO] Cadastre turma e estudante primeiro."); aguardar_enter(); return
+    ct = solicitar_codigo_existente(turmas, "cód. turma")
+    ce = solicitar_codigo_existente(estudantes, "cód. estudante")
+    if any(m['codigo_turma'] == ct and m['codigo_estudante'] == ce for m in matriculas):
+        print("[AVISO] Matrícula já existe."); aguardar_enter(); return
+    matriculas.append({"codigo_turma": ct, "codigo_estudante": ce})
+    salvar_em_arquivo("matriculas", matriculas)
+    print("[OK] Matrícula realizada."); aguardar_enter()
 
 def listar_matriculas():
-    """Lista todas as matrículas."""
     exibir_cabecalho("LISTAGEM DE MATRÍCULAS")
-    
+    if not matriculas: print("\nVazio."); aguardar_enter(); return
+    for m in matriculas:
+        e = encontrar_por_codigo(estudantes, m['codigo_estudante'])
+        print(f"Turma {m['codigo_turma']} | Estudante: {e['nome'] if e else 'N/A'}")
+    aguardar_enter()
+
+def atualizar_matricula():
+    """Atualiza uma matrícula existente."""
+    exibir_cabecalho("ATUALIZAÇÃO DE MATRÍCULA")
     if not matriculas:
-        print("\nNão há matrículas cadastradas.")
-        aguardar_enter()
-        return
-    
-    print(f"\nTotal de matrículas cadastradas: {len(matriculas)}\n")
-    for i, matricula in enumerate(matriculas, start=1):
-        turma = encontrar_por_codigo(turmas, matricula.get("codigo_turma", 0))
-        estudante = encontrar_por_codigo(estudantes, matricula.get("codigo_estudante", 0))
-        turma_info = f"Turma {turma['codigo']}" if turma else "Turma N/A"
-        est_nome = estudante.get("nome", "N/A") if estudante else "N/A"
+        print("\nNão há matrículas."); aguardar_enter(); return
+    try:
+        print("\nInforme os dados atuais:")
+        ct_at = int(input("Cód. Turma: "))
+        ce_at = int(input("Cód. Estudante: "))
         
-        print(f"  {i:>3}. {turma_info} | Estudante: {est_nome}")
-    
+        idx = -1
+        for i, m in enumerate(matriculas):
+            if m['codigo_turma'] == ct_at and m['codigo_estudante'] == ce_at:
+                idx = i; break
+        
+        if idx == -1:
+            print("[ERRO] Não encontrada."); aguardar_enter(); return
+
+        print("\n--- Novos dados ---")
+        ct_nv = solicitar_codigo_existente(turmas, "nova turma")
+        ce_nv = solicitar_codigo_existente(estudantes, "novo estudante")
+        
+        if any(m['codigo_turma'] == ct_nv and m['codigo_estudante'] == ce_nv for m in matriculas):
+            print("[AVISO] Já existe essa matrícula.")
+        else:
+            matriculas[idx] = {"codigo_turma": ct_nv, "codigo_estudante": ce_nv}
+            salvar_em_arquivo("matriculas", matriculas)
+            print("[OK] Atualizada.")
+    except ValueError: print("[ERRO] Apenas números.")
     aguardar_enter()
 
 def excluir_matricula():
-    """Exclui uma matrícula."""
     exibir_cabecalho("EXCLUSÃO DE MATRÍCULA")
-    
-    if not matriculas:
-        print("\nNão há matrículas para excluir.")
-        aguardar_enter()
-        return
-    
     try:
-        codigo_turma = int(input("\nDigite o código da turma: "))
-        codigo_estudante = int(input("Digite o código do estudante: "))
-        
-        for i, matricula in enumerate(matriculas):
-            if matricula.get("codigo_turma") == codigo_turma and matricula.get("codigo_estudante") == codigo_estudante:
-                confirmacao = input(f"\nTem certeza que deseja excluir? (S/N): ").upper()
-                if confirmacao == "S":
-                    matriculas.pop(i)
-                    salvar_em_arquivo("matriculas", matriculas)
-                    print("[OK] Matrícula excluída com sucesso.")
-                else:
-                    print("[AVISO] Operação cancelada.")
-                aguardar_enter()
-                return
-        
-        print("[ERRO] Matrícula não encontrada.")
-    except ValueError:
-        print("[ERRO] Entrada inválida.")
-    
+        ct = int(input("Cód. Turma: "))
+        ce = int(input("Cód. Estudante: "))
+        for i, m in enumerate(matriculas):
+            if m['codigo_turma'] == ct and m['codigo_estudante'] == ce:
+                if input("Excluir? (S/N): ").upper() == "S":
+                    matriculas.pop(i); salvar_em_arquivo("matriculas", matriculas)
+                    print("[OK] Removida."); aguardar_enter(); return
+        print("[ERRO] Não encontrada.")
+    except ValueError: print("[ERRO] Inválido.")
     aguardar_enter()
 
 def menu_matriculas():
-    """Menu de operações de matrículas."""
     while True:
-        exibir_cabecalho("MATRÍCULAS - MENU DE OPERAÇÕES")
-        print("\n  1. Incluir Matrícula")
-        print("  2. Listar Matrículas")
-        print("  3. Excluir Matrícula")
-        print("  0. Voltar ao Menu Principal")
-        
-        opcao = input("\nEscolha uma opção: ").strip()
-        
-        if opcao == "1":
-            incluir_matricula()
-        elif opcao == "2":
-            listar_matriculas()
-        elif opcao == "3":
-            excluir_matricula()
-        elif opcao == "0":
-            break
-        else:
-            print("\n[ERRO] Opção inválida.")
-            aguardar_enter()
+        exibir_cabecalho("MATRÍCULAS - MENU")
+        print("\n  1. Incluir\n  2. Listar\n  3. Atualizar\n  4. Excluir\n  0. Voltar")
+        op = input("\nEscolha: ")
+        if op == "1": incluir_matricula()
+        elif op == "2": listar_matriculas()
+        elif op == "3": atualizar_matricula()
+        elif op == "4": excluir_matricula()
+        elif op == "0": break
 
 # ─────────────────────────────────────────────
 # MENU PRINCIPAL
 # ─────────────────────────────────────────────
 
 def menu_principal():
-    """Menu principal do sistema."""
     while True:
         try:
             exibir_cabecalho("SISTEMA DE GESTÃO ACADÊMICA")
-            print("\n  1. Estudantes")
-            print("  2. Professores")
-            print("  3. Disciplinas")
-            print("  4. Turmas")
-            print("  5. Matrículas")
-            print("  0. Sair")
-            
-            opcao = input("\nEscolha uma opção: ").strip()
-            
-            if opcao == "1":
-                menu_estudantes()
-            elif opcao == "2":
-                menu_professores()
-            elif opcao == "3":
-                menu_disciplinas()
-            elif opcao == "4":
-                menu_turmas()
-            elif opcao == "5":
-                menu_matriculas()
-            elif opcao == "0":
-                print("\nSaindo do sistema. Até logo!")
-                break
-            else:
-                print("\n[ERRO] Opção inválida.")
-                aguardar_enter()
-        except EOFError:
-            break
+            print("\n  1. Estudantes\n  2. Professores\n  3. Disciplinas\n  4. Turmas\n  5. Matrículas\n  0. Sair")
+            op = input("\nEscolha uma opção: ")
+            if op == "1": menu_estudantes()
+            elif op == "2": menu_professores()
+            elif op == "3": menu_disciplinas()
+            elif op == "4": menu_turmas()
+            elif op == "5": menu_matriculas()
+            elif op == "0": print("\nSaindo do sistema. Até logo!"); break
+            else: print("[ERRO] Opção inválida."); aguardar_enter()
+        except EOFError: break
 
 # ─────────────────────────────────────────────
 # PONTO DE ENTRADA
 # ─────────────────────────────────────────────
 
 if __name__ == "__main__":
-    try:
-        carregar_todos_dados()
-        menu_principal()
-    except EOFError:
-        pass
+    carregar_todos_dados()
+    menu_principal()

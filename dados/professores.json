@@ -3,5 +3,15 @@
     "codigo": 1,
     "nome": "ANdres",
     "cpf": "91485754020"
+  },
+  {
+    "codigo": 2,
+    "nome": "Pipoca",
+    "cpf": "123.456.789-00"
+  },
+  {
+    "codigo": 3,
+    "nome": "Atela",
+    "cpf": "123.321.654-00"
   }
 ]

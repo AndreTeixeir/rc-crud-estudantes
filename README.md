@@ -17,7 +17,11 @@ O projeto está sendo desenvolvido em etapas ao longo da disciplina de Raciocín
 
 ## Funcionalidades
 
+<<<<<<< HEAD
 ### Parte 1 — Semana 4
+=======
+### Parte 1 — Semana 4 (Versão Atual)
+>>>>>>> 6404170967c0c66de98a66afb155a59642702110
 
 A primeira entrega contempla a estrutura de navegação completa do sistema e as funcionalidades do módulo de **Estudantes**:
 
@@ -34,6 +38,7 @@ A primeira entrega contempla a estrutura de navegação completa do sistema e as
 | Módulo de Turmas | Em desenvolvimento |
 | Módulo de Matrículas | Em desenvolvimento |
 
+<<<<<<< HEAD
 ### Parte 2 — Semana 8 (Versão Final)
 
 A segunda entrega expande o sistema com:
@@ -42,6 +47,16 @@ A segunda entrega expande o sistema com:
 - Persistência de dados em arquivo JSON
 - Validação avançada de dados e referências
 - Funções genéricas reutilizáveis entre módulos
+=======
+### Parte 2 — Semana 8 (Próxima Entrega)
+
+A segunda entrega expandirá o sistema com:
+
+- CRUD completo para todos os módulos (Professores, Disciplinas, Turmas e Matrículas)
+- Persistência de dados em arquivo
+- Validação avançada de dados
+- Reutilização de funções genéricas entre módulos
+>>>>>>> 6404170967c0c66de98a66afb155a59642702110
 
 ---
 
@@ -50,6 +65,7 @@ A segunda entrega expande o sistema com:
 ```
 rc-crud-estudantes/
 │
+<<<<<<< HEAD
 ├── rc_somativa_v1.py       # Código-fonte (Parte 1)
 ├── rc_somativa_v2.py       # Código-fonte (Parte 2 - Final)
 ├── README.md               # Documentação principal do projeto
@@ -57,6 +73,12 @@ rc-crud-estudantes/
 └── docs/
     ├── AVALIACAO.md        # Avaliação e análise da Parte 1
     ├── PARTE2.md           # Documentação da Parte 2
+=======
+├── rc_somativa_v1.py       # Código-fonte principal (Parte 1)
+├── README.md               # Documentação principal do projeto
+└── docs/
+    ├── AVALIACAO.md        # Avaliação e análise da Parte 1
+>>>>>>> 6404170967c0c66de98a66afb155a59642702110
     └── CHANGELOG.md        # Histórico de alterações
 ```
 
@@ -71,11 +93,15 @@ rc-crud-estudantes/
 
 ### Execução
 
+<<<<<<< HEAD
 **Parte 1:**
+=======
+>>>>>>> 6404170967c0c66de98a66afb155a59642702110
 ```bash
 python rc_somativa_v1.py
 ```
 
+<<<<<<< HEAD
 **Parte 2 (Final):**
 ```bash
 python rc_somativa_v2.py
@@ -85,6 +111,12 @@ Ou, em sistemas onde Python 3 é chamado explicitamente:
 
 ```bash
 python3 rc_somativa_v2.py
+=======
+Ou, em sistemas onde Python 3 é chamado explicitamente:
+
+```bash
+python3 rc_somativa_v1.py
+>>>>>>> 6404170967c0c66de98a66afb155a59642702110
 ```
 
 ---
